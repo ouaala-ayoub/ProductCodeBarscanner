@@ -17,6 +17,7 @@ class PriceEditorDialog(
     private val title: String?,
     private val message: String?,
     private val initialPrice: String = "",
+    private val initialQuantity: Int = 0,
     private val cancelable: Boolean = false,
     private val negativeText: String = context.resources.getString(R.string.Cancel),
     private val positiveText: String = context.resources.getString(R.string.Oui)
@@ -31,14 +32,23 @@ class PriceEditorDialog(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogViewBinding.inflate(layoutInflater)
+
         binding.priceEditText.setText(initialPrice)
-        viewModel = ProductPriceInputModel(binding.priceEditText.text.toString())
+        binding.quantityEditText.setText(initialQuantity.toString())
+
+        viewModel = ProductPriceInputModel(
+            binding.priceEditText.text.toString(),
+            binding.quantityEditText.text.toString()
+        )
 
         val dialog = makeDialog(
             context = requireContext(),
             onDialogClicked = object : OnDialogClicked {
                 override fun onPositiveButtonClicked() {
-                    onPriceSubmit.onPositive(binding.priceEditText.text.toString())
+                    onPriceSubmit.onPositive(
+                        binding.priceEditText.text.toString(),
+                        binding.quantityEditText.text.toString()
+                    )
                 }
 
                 override fun onNegativeButtonClicked() {
@@ -52,12 +62,16 @@ class PriceEditorDialog(
             negativeText = negativeText,
             positiveText = positiveText
         )
-        handlePrice(dialog, binding)
+        handlePrice(dialog, binding, viewModel)
         return dialog
     }
 
-    private fun handlePrice(dialog: AlertDialog, dialogViewBinding: DialogViewBinding) {
-        ProductPriceInputModel(dialogViewBinding.priceEditText.text.toString()).also {
+    private fun handlePrice(
+        dialog: AlertDialog,
+        dialogViewBinding: DialogViewBinding,
+        viewModel: ProductPriceInputModel
+    ) {
+        viewModel.also {
             it.isValid.observe(this) { isValidInput ->
                 Log.d(TAG, "handlePrice: $isValidInput")
                 dialog
@@ -67,6 +81,10 @@ class PriceEditorDialog(
 
             dialogViewBinding.priceEditText.doOnTextChanged { text, _, _, _ ->
                 it.setThePrice(text.toString())
+            }
+
+            dialogViewBinding.quantityEditText.doOnTextChanged { text, _, _, _ ->
+                it.setTheQuantity(text.toString())
             }
         }
     }

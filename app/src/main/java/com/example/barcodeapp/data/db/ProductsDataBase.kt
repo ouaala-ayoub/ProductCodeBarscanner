@@ -9,7 +9,7 @@ import com.example.barcodeapp.data.models.Product
 
 private const val dbName = "products_db"
 
-@Database(entities = [Product::class], version = 2)
+@Database(entities = [Product::class], version = 3)
 abstract class ProductsDataBase : RoomDatabase() {
 
     abstract fun productsDao(): ProductsDao

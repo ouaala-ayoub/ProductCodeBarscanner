@@ -6,18 +6,32 @@
     android:layout_height="wrap_content"
     android:padding="5dp">
 
-    <EditText
-        android:id="@+id/price_edit_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:digits="0123456789."
-        android:ems="10"
-        android:hint="prix"
-        android:inputType="number"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5">
+
+        <EditText
+            android:id="@+id/price_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789."
+            android:ems="10"
+            android:hint="prix"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/quantity_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="quantité"
+            android:inputType="number" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

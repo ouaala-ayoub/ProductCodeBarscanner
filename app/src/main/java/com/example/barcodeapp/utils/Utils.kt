@@ -16,7 +16,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 private const val TAG = "UtilsFile"
 
 interface OnPriceSubmit {
-    fun onPositive(price: String)
+    fun onPositive(price: String, quantity: String)
     fun onNegative()
 }
 

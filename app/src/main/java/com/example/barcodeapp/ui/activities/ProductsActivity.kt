@@ -1,19 +1,24 @@
 package com.example.barcodeapp.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.barcodeapp.R
 import com.example.barcodeapp.data.db.ProductsDataBase
 import com.example.barcodeapp.data.models.Product
+import com.example.barcodeapp.data.models.ShowMethodEnum
 import com.example.barcodeapp.data.repositories.ProductsRepository
 import com.example.barcodeapp.databinding.ActivityProductsBinding
 import com.example.barcodeapp.ui.adapters.ProductsAdapter
 import com.example.barcodeapp.ui.viewmodels.ProductsModel
 import com.example.barcodeapp.utils.*
 import com.google.mlkit.vision.barcode.common.Barcode
+
 
 private const val TAG = "ProductsActivity"
 
@@ -34,7 +39,6 @@ class ProductsActivity : AppCompatActivity() {
         )
         productsAdapter = ProductsAdapter(object : ProductsAdapter.OnProductClicked {
             override fun onDeleteClicked(product: Product) {
-                //to add a confirmation dialog
                 val dialog = makeDialog(
                     this@ProductsActivity,
                     title = "suppression",
@@ -59,10 +63,12 @@ class ProductsActivity : AppCompatActivity() {
                     title = "Modification",
                     message = "modifier ?",
                     initialPrice = product.price,
+                    initialQuantity = product.quantity,
                     onPriceSubmit = object : OnPriceSubmit {
-                        override fun onPositive(price: String) {
+                        override fun onPositive(price: String, quantity: String) {
                             Log.i(TAG, "onPositive: $price")
                             product.price = price
+                            product.quantity = quantity.toInt()
                             viewModel.updateProduct(product)
                         }
 
@@ -73,7 +79,7 @@ class ProductsActivity : AppCompatActivity() {
                 )
                 dialog.show(supportFragmentManager, PriceEditorDialog.TAG)
             }
-        })
+        }, ShowMethodEnum.SHOW)
 
 
         binding.productsRv.apply {
@@ -93,10 +99,11 @@ class ProductsActivity : AppCompatActivity() {
                             title = getString(R.string.add_product_title),
                             message = getString(R.string.add_product_message),
                             onPriceSubmit = object : OnPriceSubmit {
-                                override fun onPositive(price: String) {
+                                override fun onPositive(price: String, quantity: String) {
                                     val newProduct = Product(
                                         codeBar = barcode.rawValue.toString(),
-                                        price = price
+                                        price = price,
+                                        quantity = quantity.toInt()
                                     )
                                     addProduct(newProduct)
                                 }
@@ -108,7 +115,8 @@ class ProductsActivity : AppCompatActivity() {
                             }
                         )
 
-                        dialog.show(supportFragmentManager, PriceEditorDialog.TAG)
+//                        dialog.show(supportFragmentManager, PriceEditorDialog.TAG)
+                        showNewPriceDialog(dialog, this@ProductsActivity)
                     }
 
                     override fun onFail(e: Exception) {
@@ -128,5 +136,15 @@ class ProductsActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    private fun showNewPriceDialog(
+        dialogFragment: PriceEditorDialog,
+        fragmentActivity: FragmentActivity
+    ) {
+        val fragmentManager: FragmentManager = fragmentActivity.supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(dialogFragment, PriceEditorDialog.TAG)
+            .commitAllowingStateLoss()
     }
 }
