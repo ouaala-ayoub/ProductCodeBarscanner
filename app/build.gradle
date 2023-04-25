@@ -49,7 +49,10 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
 
     //ml kit
-    implementation 'com.google.mlkit:barcode-scanning:17.1.0'
+    //by google installed directly
+//    implementation 'com.google.mlkit:barcode-scanning:17.1.0'
+
+    //google play services version
     implementation 'com.google.android.gms:play-services-code-scanner:16.0.0'
 
     implementation 'androidx.core:core-ktx:1.10.0'
