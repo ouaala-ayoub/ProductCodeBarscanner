@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">BarcodeApp</string>
+    <string name="permission">Votre autorisation est nécessaire pour utiliser notre service proprement</string>
+    <string name="Oui">Oui</string>
+    <string name="ok">OK</string>
+    <string name="no_thanks">Non merci</string>
+    <string name="Cancel">Annuler</string>
+    <string name="permission_required">Permission requis</string>
+    <string name="you_cant">
+        Vous ne pouvez pas choisir une image car l\'application n\'as pas le droit d\'accéder a
+        votre galerie des photos
+    </string>
+    <string name="authorise">autoriser</string>
+    <string name="price"> %1$s Dh </string>
+    <string name="add_product_title">Prix</string>
+    <string name="add_product_message">Prix ?</string>
+    <string name="total">Total: %1$s Dh</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
