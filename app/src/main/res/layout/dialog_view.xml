@@ -17,20 +17,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5">
 
+        <TextView
+            android:id="@+id/code_bar_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/price_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:digits="0123456789."
             android:ems="10"
-            android:hint="prix"
+            android:hint="@string/prix"
             android:inputType="number" />
 
         <EditText
             android:id="@+id/quantity_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="quantité"
+            android:hint="@string/quantit"
             android:inputType="number" />
     </LinearLayout>
 

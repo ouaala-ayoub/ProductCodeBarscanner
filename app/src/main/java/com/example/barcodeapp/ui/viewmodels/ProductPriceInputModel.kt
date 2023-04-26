@@ -4,7 +4,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ProductPriceInputModel(initialPrice: String, initialQuantity: String) : ViewModel() {
+class ProductPriceInputModel(initialPrice: String, initialQuantity: String) :
+    ViewModel() {
     private val price = MutableLiveData(initialPrice)
     private val quantity = MutableLiveData(initialQuantity)
 

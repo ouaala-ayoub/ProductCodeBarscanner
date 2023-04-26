@@ -17,7 +17,8 @@ class PriceEditorDialog(
     private val title: String?,
     private val message: String?,
     private val initialPrice: String = "",
-    private val initialQuantity: Int = 0,
+    private val initialQuantity: Int = 10,
+    private val barCode: String = "",
     private val cancelable: Boolean = false,
     private val negativeText: String = context.resources.getString(R.string.Cancel),
     private val positiveText: String = context.resources.getString(R.string.Oui)
@@ -33,13 +34,19 @@ class PriceEditorDialog(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogViewBinding.inflate(layoutInflater)
 
-        binding.priceEditText.setText(initialPrice)
-        binding.quantityEditText.setText(initialQuantity.toString())
+        binding.apply {
 
-        viewModel = ProductPriceInputModel(
-            binding.priceEditText.text.toString(),
-            binding.quantityEditText.text.toString()
-        )
+            priceEditText.setText(initialPrice)
+            quantityEditText.setText(initialQuantity.toString())
+            codeBarTv.text = barCode
+
+            viewModel = ProductPriceInputModel(
+                priceEditText.text.toString(),
+                quantityEditText.text.toString()
+            )
+
+        }
+
 
         val dialog = makeDialog(
             context = requireContext(),

@@ -64,6 +64,7 @@ class ProductsActivity : AppCompatActivity() {
                     message = "modifier ?",
                     initialPrice = product.price,
                     initialQuantity = product.quantity,
+                    barCode = product.codeBar,
                     onPriceSubmit = object : OnPriceSubmit {
                         override fun onPositive(price: String, quantity: String) {
                             Log.i(TAG, "onPositive: $price")
@@ -92,20 +93,24 @@ class ProductsActivity : AppCompatActivity() {
                 productsAdapter.setProductsList(productsList)
             }
             binding.addProduct.setOnClickListener {
-                viewModel.scanProductAndResult(this@ProductsActivity, object : OnScanProduct {
+                val onScan = object : OnScanProduct {
                     override fun onSuccess(barcode: Barcode) {
+                        val resultBarCode = barcode.rawValue.toString()
+                        val current = this
                         val dialog = PriceEditorDialog(
                             this@ProductsActivity,
                             title = getString(R.string.add_product_title),
                             message = getString(R.string.add_product_message),
+                            barCode = resultBarCode,
                             onPriceSubmit = object : OnPriceSubmit {
                                 override fun onPositive(price: String, quantity: String) {
                                     val newProduct = Product(
-                                        codeBar = barcode.rawValue.toString(),
+                                        codeBar = resultBarCode,
                                         price = price,
                                         quantity = quantity.toInt()
                                     )
                                     addProduct(newProduct)
+                                    scanProductAndResult(this@ProductsActivity, current)
                                 }
 
                                 override fun onNegative() {
@@ -114,8 +119,6 @@ class ProductsActivity : AppCompatActivity() {
 
                             }
                         )
-
-//                        dialog.show(supportFragmentManager, PriceEditorDialog.TAG)
                         showNewPriceDialog(dialog, this@ProductsActivity)
                     }
 
@@ -131,7 +134,8 @@ class ProductsActivity : AppCompatActivity() {
                         Log.i(TAG, "onCanceled scanning")
                     }
 
-                })
+                }
+                viewModel.scanProductAndResult(this@ProductsActivity, onScan)
             }
         }
 
